@@ -1,6 +1,12 @@
 (function () {
   const { CARD_SELECTOR, orderIdFromSlotId, hiddenIds, buildStyleText } = globalThis.AA;
 
+  // Same resolution as lib/api.js, repeated because this file is a classic
+  // content script and cannot import. Firefox exposes chrome.* only in its
+  // callback form, so awaiting chrome.storage here would yield undefined and
+  // silently hide nothing.
+  const ext = globalThis.browser ?? globalThis.chrome;
+
   const STYLE_ID = 'aa-hide-style';
   const DECORATED_ATTR = 'data-aa-decorated';
 
@@ -71,7 +77,7 @@
     const next = !hidden.has(id);
     button.disabled = true;
     try {
-      const response = await chrome.runtime.sendMessage({
+      const response = await ext.runtime.sendMessage({
         type: 'aa:setHidden', id, hidden: next,
       });
       if (!response?.ok) throw new Error(response?.error ?? 'no response');
@@ -146,14 +152,14 @@
 
   async function init() {
     try {
-      const got = await chrome.storage.local.get('state');
+      const got = await ext.storage.local.get('state');
       hidden = new Set(hiddenIds(got.state));
     } catch (error) {
       console.warn('[amazon-order-hider] could not read hidden orders', error);
     }
     render();
 
-    chrome.storage.onChanged.addListener((changes, area) => {
+    ext.storage.onChanged.addListener((changes, area) => {
       if (area !== 'local' || !changes.state) return;
       hidden = new Set(hiddenIds(changes.state.newValue));
       render();
