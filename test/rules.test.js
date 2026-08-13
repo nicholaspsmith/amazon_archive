@@ -44,3 +44,53 @@ test('rejects unrelated and non-string input', () => {
     assert.equal(orderIdFromSlotId(bad), null);
   }
 });
+
+const { hiddenIds, buildStyleText, CARD_SELECTOR } = globalThis.AA;
+
+test('hiddenIds returns only entries flagged hidden', () => {
+  const state = {
+    version: 1,
+    orders: {
+      'a-1': { hidden: true, ts: 3 },
+      'b-2': { hidden: false, ts: 4 },
+      'c-3': { hidden: true, ts: 5 },
+    },
+  };
+  assert.deepEqual(hiddenIds(state).sort(), ['a-1', 'c-3']);
+});
+
+test('hiddenIds tolerates missing and empty state', () => {
+  assert.deepEqual(hiddenIds(undefined), []);
+  assert.deepEqual(hiddenIds({}), []);
+  assert.deepEqual(hiddenIds({ orders: {} }), []);
+});
+
+test('buildStyleText returns nothing when there is nothing to hide', () => {
+  assert.equal(buildStyleText([]), '');
+});
+
+test('buildStyleText emits a suffix selector per id', () => {
+  const css = buildStyleText(['123-4567890-1234567']);
+  assert.match(css, /\[data-csa-c-slot-id\$="\.123-4567890-1234567"\]/);
+  assert.match(css, /display:\s*none/);
+});
+
+test('buildStyleText emits a reveal rule gated on the aa-reveal class', () => {
+  const css = buildStyleText(['123-4567890-1234567']);
+  assert.match(css, /html\.aa-reveal/);
+  assert.match(css, /opacity/);
+});
+
+test('buildStyleText skips ids that fail validation', () => {
+  // Defence in depth: even if a bad id reaches storage, it must not reach CSS.
+  const css = buildStyleText(['good-1', 'bad"] * {display:block} [x="']);
+  assert.match(css, /good-1/);
+  assert.ok(!css.includes('bad'), 'the rejected id must not reach the stylesheet');
+  // One surviving id means one selector in the hide rule and one in the reveal
+  // rule. A leaked payload would push this count higher.
+  assert.equal(css.match(/data-csa-c-slot-id\$=/g).length, 2);
+});
+
+test('CARD_SELECTOR matches the slot-id prefix', () => {
+  assert.equal(CARD_SELECTOR, '[data-csa-c-slot-id^="amzn1.yourorders.order-card."]');
+});
