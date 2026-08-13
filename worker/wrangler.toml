@@ -1,0 +1,7 @@
+name = "amazon-order-hider"
+main = "src/index.js"
+compatibility_date = "2026-08-13"
+
+[[kv_namespaces]]
+binding = "ORDERS"
+id = "REPLACE_WITH_NAMESPACE_ID"
