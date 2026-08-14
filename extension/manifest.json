@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Amazon Order Hider",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Hide orders from your Amazon order history, with sync across your browsers.",
   "permissions": ["storage", "alarms"],
   "optional_host_permissions": ["https://*/*"],
