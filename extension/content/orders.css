@@ -1,11 +1,18 @@
 /* All injected UI is prefixed aa- to avoid colliding with Amazon's styles. */
 
-.aa-card-relative {
+/* Reserve a strip across the top of every order card. The button is absolutely
+   positioned into that strip, so it lands in an identical spot on every card
+   and cannot overlap Amazon's own header content the way an overlay would. */
+.aa-card {
   position: relative;
+  padding-top: 30px;
 }
 
 .aa-btn {
-  margin-left: 12px;
+  position: absolute;
+  top: 2px;
+  right: 0;
+  z-index: 2;
   padding: 2px 10px;
   border: 1px solid #d5d9d9;
   border-radius: 8px;
@@ -24,13 +31,6 @@
 .aa-btn:disabled {
   opacity: 0.5;
   cursor: default;
-}
-
-.aa-btn-floating {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 2;
 }
 
 .aa-toggle-bar {

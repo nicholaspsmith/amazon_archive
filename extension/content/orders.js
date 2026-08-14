@@ -10,15 +10,6 @@
   const STYLE_ID = 'aa-hide-style';
   const DECORATED_ATTR = 'data-aa-decorated';
 
-  // Tried in order; the first match hosts the button. Amazon's card internals
-  // are not contractual, so an absolute-positioned fallback ends the list.
-  const HEADER_CANDIDATES = [
-    '.order-header',
-    '.a-box.order-header',
-    '.order-info',
-    ':scope > .a-box-group > .a-box:first-child',
-  ];
-
   let hidden = new Set();
   let revealed = false;
 
@@ -33,34 +24,29 @@
     return element;
   }
 
-  function buttonHost(card) {
-    for (const selector of HEADER_CANDIDATES) {
-      const found = card.querySelector(selector);
-      if (found) return { host: found, floating: false };
-    }
-    return { host: card, floating: true };
-  }
-
+  // The button is anchored to the card itself, never to an element inside it.
+  // Card internals vary by order type — delivered, cancelled, digital and
+  // subscription cards each have a different header — so hosting the button in
+  // a header moved it around. The card is the one element every order shares,
+  // so positioning against it puts the button in the same corner every time.
   function decorate(card) {
     if (card.hasAttribute(DECORATED_ATTR)) return;
     const id = orderIdFromSlotId(card.getAttribute('data-csa-c-slot-id'));
     if (!id) return;
 
     card.setAttribute(DECORATED_ATTR, '1');
-
-    const { host, floating } = buttonHost(card);
-    if (floating) card.classList.add('aa-card-relative');
+    card.classList.add('aa-card');
 
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = floating ? 'aa-btn aa-btn-floating' : 'aa-btn';
+    button.className = 'aa-btn';
     button.dataset.aaOrderId = id;
     button.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
       toggle(id, button);
     });
-    host.appendChild(button);
+    card.appendChild(button);
     labelButton(button, id);
   }
 

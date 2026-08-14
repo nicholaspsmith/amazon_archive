@@ -78,5 +78,7 @@ extension works.
 
 ## Design
 
+- **[Handoff — start here](docs/HANDOFF.md)** — current state, what is and isn't
+  verified, next steps, and the traps
 - [Design spec](docs/superpowers/specs/2026-08-13-amazon-order-hider-design.md)
 - [Implementation plan](docs/superpowers/plans/2026-08-13-amazon-order-hider.md)

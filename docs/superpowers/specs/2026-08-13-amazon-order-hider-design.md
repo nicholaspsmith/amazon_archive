@@ -165,13 +165,17 @@ appended to `document.documentElement`.
 
 ### Injected UI
 
-- **Per-card Hide button.** A small button in the card's header row. The exact
-  header selector inside `.order-card` must be confirmed against the live page
-  during implementation; if no stable header element exists, the fallback is
-  `position: absolute` in the card's top-right corner with `position: relative` on
-  the card. Buttons are marked with a data attribute so the observer never
-  double-injects. When the reveal toggle is on, a hidden card's button reads
-  "Unhide" instead.
+- **Per-card Hide button.** Absolutely positioned in the top-right corner of the
+  card itself, never hosted inside a header element. Resolved against the live
+  page on 2026-08-13: card internals differ by order type — delivered, cancelled,
+  digital and subscription cards each carry a different header — so hosting the
+  button in a header put it in a visibly different place on each card. The card
+  is the one element every order shares, so `.aa-card` takes `position: relative`
+  plus a `padding-top` strip and the button is pinned into that strip. Reserving
+  the space rather than overlaying also means the button never covers Amazon's
+  own header content. Buttons are marked with a data attribute so the observer
+  never double-injects. When the reveal toggle is on, a hidden card's button
+  reads "Unhide" instead.
 - **Reveal toggle.** A `Show hidden (n)` control injected at the top of the order
   list, rendered only when `n > 0`. Toggling adds/removes `aa-reveal` on
   `documentElement`. The reveal state is per-page-load and is not persisted.
@@ -375,9 +379,9 @@ Content script matches, all at `document_start`:
 *://www.amazon.com/your-orders/orders*
 ```
 
-## Open item for implementation
+## Resolved items
 
-The header element inside `.order-card` that the Hide button attaches to is not yet
-known — the available markup sample covers only the card's opening tag. This must be
-confirmed against the live orders page before the button injection is written, with
-the absolute-positioning fallback described above if no stable header exists.
+**Button placement** (opened 2026-08-13, closed 2026-08-13). The header element
+inside `.order-card` was unknown when this spec was written. Confirmed against the
+live page: there is no header element common to all card types, so the button is
+anchored to the card itself. See "Injected UI" above.
