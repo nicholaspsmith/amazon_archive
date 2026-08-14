@@ -9,7 +9,40 @@ Personal-use extension for Firefox and Chrome. Not published to either store.
 
 ## Install
 
-Load `extension/` unpacked — see [docs/manual-verification.md](docs/manual-verification.md).
+### Chrome
+
+`chrome://extensions` → Developer mode → **Load unpacked** → pick `extension/`.
+Chrome installs from the directory; no packaging step is involved.
+
+### Firefox / Zen
+
+Firefox has no "load unpacked" equivalent, and it will not permanently install an
+add-on that is not signed. There are two routes:
+
+**Testing — unsigned, removed when the browser restarts:**
+
+`about:debugging#/runtime/this-firefox` → **Load Temporary Add-on** → pick
+`extension/manifest.json`.
+
+**Permanent — requires signing:**
+
+```bash
+npm run package   # builds dist/*.xpi and dist/*-chrome.zip
+npm run sign      # signs via addons.mozilla.org, needs AMO API credentials
+```
+
+`npm run sign` submits to AMO on the `unlisted` channel, which signs the add-on
+for self-distribution without publishing it to the public directory. Get API
+credentials at https://addons.mozilla.org/developers/addon/api/key/ and export
+them as `WEB_EXT_API_KEY` and `WEB_EXT_API_SECRET`.
+
+> **Do not build the archive by hand.** Compressing the `extension` folder — via
+> Finder's "Compress" or `zip -r ext.zip extension` — nests every file under an
+> `extension/` directory, so `manifest.json` is not at the archive root and
+> Firefox rejects it with *"appears to be corrupt"*. `npm run package` zips from
+> inside the directory and asserts the layout before it will emit an artifact.
+
+Run `npm run lint:ext` to check the manifest with Mozilla's own linter.
 
 ## Sync (optional)
 

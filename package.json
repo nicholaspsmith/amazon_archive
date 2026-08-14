@@ -5,6 +5,9 @@
   "type": "module",
   "engines": { "node": ">=20" },
   "scripts": {
-    "test": "node --test \"test/*.test.js\""
+    "test": "node --test \"test/*.test.js\"",
+    "lint:ext": "npx --yes web-ext@latest lint --source-dir=extension",
+    "package": "node scripts/package.js",
+    "sign": "npx --yes web-ext@latest sign --source-dir=extension --artifacts-dir=dist --channel=unlisted"
   }
 }
