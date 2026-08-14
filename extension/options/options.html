@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Amazon Order Hider — Settings</title>
+  <style>
+    body { font: 14px/1.5 system-ui, sans-serif; max-width: 34rem; margin: 2rem auto; padding: 0 1rem; color: #0f1111; }
+    h1 { font-size: 1.25rem; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    input { width: 100%; padding: 0.5rem; margin-top: 0.25rem; border: 1px solid #888; border-radius: 6px; box-sizing: border-box; font: inherit; }
+    button { margin-top: 1.25rem; padding: 0.5rem 1rem; border: 1px solid #888; border-radius: 6px; background: #f0f2f2; font: inherit; cursor: pointer; }
+    .hint { color: #565959; font-size: 0.85rem; margin-top: 0.25rem; }
+    .status { margin-top: 1rem; padding: 0.5rem 0.75rem; border-radius: 6px; }
+    .status.ok { background: #e7f6e7; }
+    .status.err { background: #fbeaea; }
+    .status:empty { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Amazon Order Hider</h1>
+  <p>Hiding works without any of this. These settings only add sync between your browsers.</p>
+
+  <label for="url">Worker URL</label>
+  <input id="url" type="url" placeholder="https://amazon-order-hider.you.workers.dev" autocomplete="off">
+  <div class="hint">The URL printed by <code>npx wrangler deploy</code>.</div>
+
+  <label for="token">Bearer token</label>
+  <input id="token" type="password" autocomplete="off">
+  <div class="hint">The value you set with <code>npx wrangler secret put AUTH_TOKEN</code>.</div>
+
+  <button id="save" type="button">Save and test connection</button>
+  <div id="status" class="status" role="status"></div>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

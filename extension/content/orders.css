@@ -1,0 +1,58 @@
+/* All injected UI is prefixed aa- to avoid colliding with Amazon's styles. */
+
+.aa-card-relative {
+  position: relative;
+}
+
+.aa-btn {
+  margin-left: 12px;
+  padding: 2px 10px;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  background: #fff;
+  color: #0f1111;
+  font-size: 12px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.aa-btn:hover {
+  background: #f7fafa;
+  border-color: #a6a6a6;
+}
+
+.aa-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.aa-btn-floating {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+}
+
+.aa-toggle-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 8px 0;
+}
+
+.aa-toggle-bar[hidden] {
+  display: none;
+}
+
+.aa-toggle {
+  padding: 4px 12px;
+  border: 1px solid #d5d9d9;
+  border-radius: 8px;
+  background: #f0f2f2;
+  color: #0f1111;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.aa-toggle:hover {
+  background: #e3e6e6;
+}

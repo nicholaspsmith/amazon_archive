@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Amazon Order Hider",
+  "version": "0.0.0",
+  "description": "Hide orders from your Amazon order history, with sync across your browsers.",
+  "permissions": ["storage", "alarms"],
+  "optional_host_permissions": ["https://*/*"],
+  "background": {
+    "service_worker": "background/worker.js",
+    "scripts": ["background/worker.js"],
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.amazon.com/gp/your-account/order-history*",
+        "*://www.amazon.com/gp/css/order-history*",
+        "*://www.amazon.com/your-orders/orders*"
+      ],
+      "js": ["lib/rules.js", "content/orders.js"],
+      "css": ["content/orders.css"],
+      "run_at": "document_start",
+      "all_frames": false
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Amazon Order Hider"
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "amazon-order-hider@nicholassmith",
+      "strict_min_version": "121.0"
+    }
+  }
+}
