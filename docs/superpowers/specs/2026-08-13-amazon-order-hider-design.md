@@ -110,7 +110,9 @@ All other modules import `api` and use promises. No callback style anywhere.
 
 ## Hiding mechanism
 
-Order cards are identified by the attribute given in the live page:
+Order cards are identified by the attribute given in the live page. The id values
+below are placeholders — the real ones were redacted before this repository was
+made public — but the attribute names and structure are verbatim:
 
 ```html
 <div class="order-card js-order-card"
